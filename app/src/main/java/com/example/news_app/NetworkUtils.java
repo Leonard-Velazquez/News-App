@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
-    public static final String Base_Url= "https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=3294ba5ab5314f35a0fb107604ebf5ab";
+    public static final String Base_Url= "https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=";
 
     public static final String Query_Param = "q";
 
