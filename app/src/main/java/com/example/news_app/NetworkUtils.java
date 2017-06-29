@@ -7,7 +7,15 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.jar.JarException;
+
+import com.example.news_app.Model.NewsItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Leonard on 6/20/2017.
@@ -33,6 +41,7 @@ public class NetworkUtils {
         return url;
     }
 
+    //Passes a url string and returns a Json string
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -51,5 +60,26 @@ public class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    public static ArrayList<NewsItem> parseJSON(String json)throws JSONException{
+        ArrayList<NewsItem> result = new ArrayList<>();
+        JSONObject main = new JSONObject(json);
+        JSONArray items = main.getJSONArray("articles");
+
+        for(int i=0; i < items.length(); i++){
+            JSONObject item = items.getJSONObject(i);
+
+            String author =item.getString("author");
+            String title =item.getString("title");
+            String description =item.getString("description");
+            String url =item.getString("url");
+            String urlToImage =item.getString("urlToImage");
+            String publishDate =item.getString("publishedAt");
+
+            NewsItem news = new NewsItem(author,title,description,url,urlToImage,publishDate);
+            result.add(news);
+        }
+        return result;
     }
 }

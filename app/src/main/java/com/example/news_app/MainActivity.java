@@ -1,19 +1,28 @@
 package com.example.news_app;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.news_app.Model.NewsItem;
+
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textView;
+    private RecyclerView recycling;
     private EditText search;
 
     @Override
@@ -22,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         search = (EditText)findViewById(R.id.editText);
-        textView = (TextView)findViewById(R.id.display);
+        recycling = (RecyclerView)findViewById(R.id.recycler);
+
+        recycling.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -43,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class NetworkTask extends AsyncTask<URL, Void, String>{
+    public class NetworkTask extends AsyncTask<URL, Void, ArrayList<NewsItem>>{
         String query;
 
         NetworkTask(String s){
@@ -56,24 +67,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(URL... params){
-            String result= null;
+        protected ArrayList<NewsItem> doInBackground(URL... params){
+            ArrayList<NewsItem> result =null;
             URL url = NetworkUtils.makeURL(query);
             try{
-                result = NetworkUtils.getResponseFromHttpUrl(url);
+                String json =NetworkUtils.getResponseFromHttpUrl(url);
+                result = NetworkUtils.parseJSON(json);
             }catch (IOException e){
+                e.printStackTrace();
+            }catch(JSONException e){
                 e.printStackTrace();
             }
             return result;
         }
 
         @Override
-        protected void onPostExecute(String s){
-            super.onPostExecute(s);
-            if(s == null){
-                textView.setText("No text available.");
-            }else{
-                textView.setText(s);
+        protected void onPostExecute(final ArrayList<NewsItem> data){
+            super.onPostExecute(data);
+            if(data != null){
+                NewsAdapter adapter_news = new NewsAdapter(data, new NewsAdapter.ItemClickListener(){
+                    @Override
+                    public void onItemClick(int clickedItemIndex){
+                        String url = data.get(clickedItemIndex).getUrl();
+                        openWebPage(url);
+                    }
+                });
+                recycling.setAdapter(adapter_news);
+            }
+        }
+
+        public void openWebPage (String url){
+            Uri webpage = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW,webpage);
+            if(intent.resolveActivity(getPackageManager()) != null){
+                startActivity(intent);
             }
         }
     }
