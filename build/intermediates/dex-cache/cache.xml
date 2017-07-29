@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Leonard Velazquez\Documents\Computer Science Projects\News-App\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="63049666113abcec13d3b68c8bb0ea1419054431">
+        <dex dex="C:\Users\Leonard Velazquez\Documents\Computer Science Projects\News-App\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_ff95ac0bfffce1356613b65c08f09c712d0244d1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Leonard Velazquez\Documents\Computer Science Projects\News-App\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\Leonard Velazquez\Documents\Computer Science Projects\News-App\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_dee9ba023c95a6d8c7b8db5bca6a844b78707aba\classes.dex" />
+    </item>
+
+</items>
